@@ -37,7 +37,7 @@ def calculate_age(date_of_birth):
 
 
 def upload_to_imgbb(file_path):
-    with open('chatapp/website/config.json', 'r') as config_file:
+    with open('chatapp/config.json', 'r') as config_file:
         config = json.load(config_file)
     imgbb_api_key = config['IMGBB_KEY']
     endpoint = "https://api.imgbb.com/1/upload"
