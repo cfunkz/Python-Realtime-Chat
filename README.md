@@ -38,7 +38,7 @@ This is a simple Flask-based chat application with basic features. The project i
 - [x] Image uploading, Image sending using `IMGBB`
 - [x] Create Room, Join Room, Edit Room, Leave Room, Private Rooms, User List
 - [x] SQLite Database
-- [x] Working HTML tags in messages `<b>bold</bold>, <img>, "`embed`"` etc.
+- [x] Working HTML tags in messages `<b>bold</bold>, <img>` etc. and double "``" for embed.
 
 ### To-Do List
 
