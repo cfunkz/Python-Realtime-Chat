@@ -71,14 +71,6 @@ def dashboard():
     my_rooms = current_user.rooms
     return render_template('dashboard.html', user=current_user, rooms=get_rooms_count(), public_rooms=public_rooms, my_rooms=my_rooms)
 
-@views.route('/games')
-def games():
-    return render_template('games.html', user=current_user)
-
-@views.route('/games/snake')
-def games_snake():
-    return render_template('/games/snake.html', user=current_user)
-
 @views.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_room_route():
