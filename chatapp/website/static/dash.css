@@ -1,0 +1,125 @@
+.dash-container {
+    padding: 20px;
+    font-family: Arial, sans-serif; /* Use a suitable font */
+}
+
+.dash-tabs-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.dash-tab {
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-right: 10px;
+    color:white;
+    background-color: #363b49; /* Set a lowkey background color */
+    border-radius: 8px; /* Add border radius for a softer look */
+}
+
+.dash-tab:hover {
+    color: #fff;
+    box-shadow: 0 0 5px rgba(0, 128, 128, 1);
+}
+
+.dash-tab.active {
+    background-color: rgba(0, 128, 128, 1) !important;
+    color: #fff;
+}
+
+.dash-tab-content {
+    padding: 20px;
+    background-color: #1f2127;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.dash-rooms-list {
+    max-height: 550px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+}
+
+.dash-room-item {
+    background-color: #363b49;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding:5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.dash-room-item:hover {
+    background-color: #464b5a;
+}
+
+.dash-room-details {
+    flex-grow: 1;
+    margin:10px;
+    
+}
+
+.dash-room-name {
+    color: #61dafb;
+    font-weight: bold;
+    margin:15px;
+}
+
+.dash-room-description {
+    background-color: #1f2127;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 5px;
+    max-width:90%;
+}
+
+.dash-room-users span {
+    background-color: #464b5a;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.dash-room-users {
+    margin-right: 10px;
+}
+
+#dash-buttons {
+    display: flex;
+    gap: 10px;
+    padding:15px;
+    border-radius:10px;
+    background-color:#1f2127;
+}
+
+
+@media (max-width: 768px) {
+    .dash-tab-content {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .dash-room-item {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+    }
+
+    .dash-room-details {
+        margin-bottom: 10px; /* Add margin between room details on smaller screens */
+    }
+
+    .dash-room-description span,
+    .dash-room-users span {
+        font-size: 0.8rem;
+    }
+
+    #dash-buttons {
+        flex-direction: row; 
+    }
+
+    #dash-buttons button {
+        width: 100%;
+    }
+}

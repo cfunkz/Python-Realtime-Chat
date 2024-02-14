@@ -1,0 +1,150 @@
+.account-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px;
+}
+
+.details-section, .edit-section {
+    width: 48%;
+    background-color: #1f2127;
+    padding: 20px;
+    border-radius: 8px;
+    border-color: rgba(0, 128, 128, 0.8);
+    box-shadow: 0 0 20px rgba(0, 128, 128, 0.8);
+    color: #fff;
+}
+
+h2 {
+    color: #61dafb;
+}
+
+/* Details Card Styles */
+.details-card {
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border-radius: 15px;
+    animation: fadeIn 1s ease;
+    transition: transform 0.3s ease;
+}
+#details-list {
+    transition: transform 0.3s ease;
+}
+#details-list:hover {
+    transform: scale(1.02);
+}
+
+.settings-labels{
+    background-color:#2e3240;
+    padding:5px;
+    border-radius:5px;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.details-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.details-card li {
+    margin: 15px;
+}
+
+.on-state, .off-state {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.on-state {
+    color: green;
+}
+
+.off-state {
+    color: red;
+}
+
+.aboutMe {
+    margin-top: 10px;
+    word-break: break-all;
+    background-color:#2e3240;
+    border-radius:5px;
+    padding:10px
+}
+
+/* Edit Section Styles */
+.accountform {
+    margin-top: 20px;
+}
+
+label {
+    color: #61dafb;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, textarea, select {
+    display: block;
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 10px;
+    border-radius: 15px; /* Set the border-radius as desired for a beautiful frame */
+    border: 2px solid rgba(0, 128, 128, 0.8); /* Set the border color as desired */
+    box-sizing: border-box;
+    outline:none;
+    background-color: #1f2127;
+    color:rgba(0, 128, 128);
+}
+
+textarea {
+    resize: none;
+}
+
+#btn-settings{
+    max-width: 25%;
+    margin:5px;
+    border-radius:10px;
+}
+
+#counter {
+    margin-top: 10px;
+    color: #61dafb;
+}
+
+.profile-picture-container {
+    position: relative;
+    width: 150px; /* Set the width as desired */
+    height: 200px; /* Set the height as desired */
+    margin: 10px auto;
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: solid 1px rgba(0, 128, 128, 0.9);
+    transition: transform 0.3s ease;
+    border-radius: 15px; /* Set the border-radius as desired for a beautiful frame */
+    box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
+}
+.profile-picture:hover {
+    transform: scale(1.02);
+}
+@media (max-width: 768px) {
+    /* Apply these styles only for screens up to 768px (small screens) */
+    .account-container {
+        flex-direction: column;
+        margin: 20px; /* Adjusted margin for smaller screens */
+    }
+
+    .details-section, .edit-section {
+        width: 100%; /* Full width on smaller screens */
+        margin-bottom: 20px; /* Adjusted margin for smaller screens */
+    }
+}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}WhisperTalk | Account Settings{% endblock %}
+
+{% block content %}
+
+<div class="account-container">
+    <div class="details-section">
+        <h2>Your Details</h2>
+
+        <div class="profile-picture-container">
+            <img class="profile-picture" src="{% if user.img %}{{ user.img }}{% else %}{{ "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" | string }}{% endif %}" alt="Profile Image">
+        </div>
+
+        <div class="details-card">
+            <div id="details-list" style="width:100%; height:150px; background-color:#2e3240; border-radius:10px; text-align:center;">
+                <label style="margin:5px;">Achievments</label>
+            </div>
+            <ul id="details-list">
+                <li><strong class="settings-labels">Username</strong> {{ user.username }}</li>
+                <li><strong class="settings-labels">Nickname</strong> {{ user.nickname }}</li>
+                <li><strong class="settings-labels">E-Mail</strong> {{ user.email }}</li>
+                <li><strong class="settings-labels">Date of Birth</strong> {{ user.dob }}</li>
+                <li><strong class="settings-labels">Gender</strong> {{ user.gender.title() }}</li>
+                <li><strong class="settings-labels">Country</strong> {{ user.country.title() }}</li>
+            </ul>
+            <p id="details-list" class="aboutMe"><strong>About Me</strong> {{ user.aboutme }}</p>
+        </div>
+    </div>
+
+    <div class="edit-section">
+        <h2>Edit Your Details:</h2>
+
+        <form class="accountform" method="post" enctype="multipart/form-data">
+            <label for="image">Profile Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <button class="btn-primary" id="btn-settings" type="submit">Upload</button>
+        </form>
+
+        <form class="accountform" method="post">
+            <label for="username">New Username</label>
+            <input type="username" id="username" name="username" placeholder="Enter your new username">
+            <input type="username" id="username2" name="username2" placeholder="Confirm your new username">
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+
+        <form class="accountform" method="post">
+            <label for="nickname">Nickname:</label>
+            <input type="text" id="nickname" name="nickname" placeholder="Enter your nickname">
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+
+        <form class="accountform" method="post">
+            <label for="password">New Password</label>
+            <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter your old password">
+            <input type="password" id="password1" name="password1" placeholder="Enter your new password">
+            <input type="password" id="password2" name="password2" placeholder="Confirm your new password">
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+
+        <form class="accountform" method="post">
+            <label for="email">New E-Mail</label>
+            <input type="email" id="email" name="email" placeholder="Enter your E-Mail">
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+        
+        <form class="accountform" method="post">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob">
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+        
+        <form class="accountform" method="post">
+            <label for="country">Country:</label>
+            <select id="country" name="country">
+            </select>
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+        
+        <form class="accountform" method="post">
+            <label for="aboutMe">About Me</label>
+            <textarea id="aboutme" name="aboutme" maxlength="500" oninput="updateCharacterCount(this)" placeholder="Tell others about yourself" rows="8"></textarea>
+            <div id="counter">Characters remaining: <span id="charCount">500</span></div>
+
+            <button class="btn-primary" id="btn-settings" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
