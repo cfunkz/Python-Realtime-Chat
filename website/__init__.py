@@ -10,7 +10,7 @@ DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
-    with open('chatapp/website/config.json', 'r') as config_file:
+    with open('chatapp/config.json', 'r') as config_file:
             config = json.load(config_file)
     app.config['SECRET_KEY'] = config['SECRET_KEY']
     app.config['UPLOAD_FOLDER'] = config['UPLOAD_FOLDER']
