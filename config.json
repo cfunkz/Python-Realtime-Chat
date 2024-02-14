@@ -1,0 +1,7 @@
+{
+    "IMGBB_KEY": "",
+    "SECRET_KEY": "",
+    "UPLOAD_FOLDER": "chatapp/uploads/",
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///database.db",
+    "GIPHY_API_KEY": ""
+  }
