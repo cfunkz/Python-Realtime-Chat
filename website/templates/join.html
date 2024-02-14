@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}WhisperTalk | Join Room{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <!-- Add Bootstrap CSS link here if not already included -->
+{% endblock %}
+
+{% block content %}
+<style>
+    .join_room {
+        max-width: 400px;
+        margin: auto;
+        margin-top: 10%;
+        padding: 50px;
+        border: 1px solid rgba(0, 128, 128, 0.6);
+        border-radius: 8px;
+        background-color: #1f2127;
+        box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
+        color:#61dafb;
+    }
+    
+    .join_room h3 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        color:#61dafb;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .input-control {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border: 2px solid rgba(0, 128, 128, 0.9); /* Matched color */
+        background-color: #1f2127; /* Matched color */
+        color: #61dafb; /* Matched color */
+        outline:none;
+    }
+</style>
+
+<div class="join_room">
+    <h3>Join Room</h3>
+    <form method="post" action="{{ url_for('views.join') }}">
+        <div class="form-group">
+            <label for="invite_code">Enter 10-digit Invite Code</label>
+            <input type="text" id="invite_code" name="invite_code" class="input-control" title="Please enter a 10-digit invite code" required>
+        </div>
+        <button type="submit" class="btn-primary">Join Room</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}WhisperTalk | Create Room{% endblock %}
+
+{% block content %}
+<style>
+    /* Create Room Page Styles */
+    .create_room {
+        max-width: 400px;
+        margin: auto;
+        margin-top: 10%;
+        padding: 20px;
+        border: 1px solid rgba(0, 128, 128, 0.6);
+        border-radius: 8px;
+        background-color: #1f2127; /* Matched color */
+        box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
+    }
+    
+    .create_room h3 {
+        text-align: center;
+        color: #61dafb; /* Matched color */
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .input-control, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid rgba(0, 128, 128, 0.9); /* Matched color */
+        outline:none;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background-color: #1f2127; /* Matched color */
+        color: #61dafb; /* Matched color */
+    }
+    
+    .form-switch {
+        margin-bottom: 20px;
+        color:#61dafb;
+    }
+    
+</style>
+
+<div class="create_room">
+    <h3>Create Room</h3>
+    <form method="post" action="{{ url_for('views.create_room_route') }}">
+        <div class="form-group">
+            <label style="color:#61dafb;" for="room_name">Room Name</label>
+            <input type="text" id="room_name" placeholder="25 characters max..." name="room_name" class="input-control" maxlength="25" oninput="updateCharacterCount(this)" required>
+        </div>
+        <!-- Use Bootstrap form-switch for private/public selection -->
+        <div class="form-switch">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="is_private" name="is_private">
+                <label class="custom-control-label" for="is_private">Private Room</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="color:#61dafb;" for="room_keywords">Description</label>
+            <textarea style="resize: none;" placeholder="Enter room description..." type="text" id="room_keywords" name="room_keywords" class="input-control" maxlength="100" oninput="updateCharacterCount(this)" onkeydown="keyCheck(event)" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Create</button>
+    </form>
+</div>
+
+{% endblock %}

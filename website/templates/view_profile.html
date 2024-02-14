@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}WhisperTalk | View Profile{% endblock %}
+
+{% block content %}
+<style>
+    /* Enhanced Profile Container Styles */
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5%;
+        background-color: #2e3240;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    h2 {
+        color: #61dafb;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        background-color:#1f2127;
+        padding:10px;
+        border-radius:5px;
+            
+    }
+
+    /* Card Styles for Profile Details */
+    .profile-card {
+        width: 70%;
+        background-color: #1f2127;
+        padding: 15px;
+        color: #fff;
+        margin: 10px 0;
+        transition: transform 0.3s ease;
+        border: solid 1px rgba(0, 128, 128, 0.6);
+        border-radius: 15px; /* Set the border-radius as desired for a beautiful frame */
+        box-shadow: 0 0 10px rgba(0, 128, 128, 0.9);
+        z-index:1;
+    }
+
+    .profile-card:hover {
+        transform: scale(1.05);
+    }
+
+    .profile-card ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .profile-card li {
+        margin: 10px;
+        font-size: 1rem;
+    }
+
+    /* Profile Picture Container Styles */
+    .profile-picture-container {
+        width: 150px; /* Set the width as desired */
+        height: 200px; /* Set the height as desired */
+        margin: 10px auto;
+    }
+
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: solid 1px rgba(0, 128, 128, 0.7);
+        transition: transform 0.3s ease;
+        border-radius: 15px; /* Set the border-radius as desired for a beautiful frame */
+        box-shadow: 0 0 10px rgba(0, 128, 128, 1);
+    }
+
+    .profile-picture:hover {
+        transform: scale(1.05);
+    }
+
+    /* About Me Section Styles */
+    .aboutMe {
+        margin-top: 10px;
+        word-break: break-all;
+        background-color: #2e3240;
+        border-radius: 10px;
+        padding: 15px;
+        color:white;
+        width: 70%;
+        line-height: 1.5;
+    }
+    .view-profile {
+        background-color:#2e3240;
+        padding:5px;
+        border-radius:5px;
+    }
+</style>
+<div class="profile-container">
+    <h2>{{ user_profile.nickname }}</h2>
+
+    <!-- Display Profile Image in a Circular Container with Animation -->
+    <div class="profile-picture-container">
+        <img class="profile-picture" src="{% if user_profile.img %}{{ user_profile.img }}{% else %}{{"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" | string}}{% endif %}" alt="Profile Image">
+    </div>
+
+    <!-- Display User Details in a Card -->
+    <div class="profile-card">
+        <ul>
+            <li><strong class="view-profile">Nickname</strong> {{ user_profile.username }}</li>
+            <li><strong class="view-profile">Age</strong> {{ age }} years</li>   
+            <li><strong class="view-profile">Gender</strong> {{ user_profile.gender.title() }}</li>         
+            <li><strong class="view-profile">Country</strong> {{ user_profile.country.title() }}</li>
+            <!-- Add any additional details you want to display -->
+        </ul>
+    </div>
+
+    <!-- Display About Me Section in a Styled Container -->
+    <div class="aboutMe">
+        <strong>About Me:</strong>
+        <p>{{ user_profile.aboutme }}</p>
+    </div>
+</div>
+{% endblock %}

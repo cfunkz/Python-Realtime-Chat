@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}WhisperTalk Login{% endblock %}
+{% block content %}
+    <style>
+    </style>
+
+    <div class="login-container">
+        <div class="login-tabs">
+            <div class="login-tab active" onclick="toggleForm('loginForm')">Login</div>
+            <div class="login-tab" onclick="toggleForm('registerForm')">Register</div>
+        </div>
+
+        <div id="loginForm" class="login-form-section active">
+            <form action="/login" method="post">
+                <label for="username">Username</label>
+                <input class="input-fields" type="username" id="username" name="username" placeholder="Enter username or email" required>
+                <label for="password">Password</label>
+                <input class="input-fields" type="password" id="password" name="password" placeholder="Enter password" required>
+                <button class="btn-primary" type="submit">Login</button>
+            </form>
+        </div>
+
+        <div id="registerForm" class="login-form-section">
+            <form action="/register" method="post">
+                <label for="newUsername">Username</label>
+                <input class="input-fields" type="text" id="newUsername" name="newUsername" required>
+                <label for="newEmail">Email</label>
+                <input class="input-fields" type="text" id="newEmail" name="newEmail" required>
+                <label for="newPassword">Password</label>
+                <input class="input-fields" type="password" id="newPassword" name="newPassword" required>
+                <label for="newPassword2">Confirm Password</label>
+                <input class="input-fields" type="password" id="newPassword2" name="newPassword2" required>
+                <label for="dob">Date Of Birth</label>
+                <input class="input-fields" type="date" id="dob" name="dob" required>
+                <label for="gender">Select Gender</label>
+                <select class="input-fields" id="gender" name="gender" required>
+                    <option value="" disabled selected>Gender</option>
+                    <option value="not" default:"">Not mentioned</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="non-binary">Non-Binary</option>
+                    <option value="other">Other</option>
+                </select>
+                <label for="country">Select Country</label>
+                <select class="input-fields" id="country" name="country" required></select>
+                <button class="btn-primary" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(formName) {
+            const forms = document.querySelectorAll('.login-form-section');
+            const tabs = document.querySelectorAll('.login-tab');
+            forms.forEach(form => form.classList.remove('active'));
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(formName).classList.add('active');
+            const activeTab = Array.from(tabs).find(tab => tab.textContent.toLowerCase() === formName.toLowerCase().replace('form', ''));
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+    </script>
+{% endblock %}

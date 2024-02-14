@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    background-color:  #282c35;
+
+}
+.navbar {
+    background-color: #1f2127;
+}
+
+.username-field {
+    font-weight: bold;
+    margin-left: 1rem;
+    color: rgb(227, 225, 225) !important;
+    font-size: 16px !important;
+}
+
+.username-field::after {
+    display: none;
+}
+        
+.login-container {
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 128, 128, 0.8);
+    margin: 2% auto;
+}
+
+.login-tabs {
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    color:white;
+    font-size:20px;
+}
+
+.login-tab {
+    flex: 1;
+    text-align: center;
+    padding: 15px 0;
+    background-color: #008080;
+    transition: background-color 0.3s;
+}
+
+.login-tab.active {
+    background-color: #1f2127 !important;
+}
+
+.login-form-section {
+    display: none;
+    padding: 20px;
+    background-color: #1f2127; /* Unify background color with tabs */
+    border-radius: 0 0 10px 10px;
+}
+
+.login-form-section.active {
+    display: block;
+}
+
+.login-form-section label {
+    color: #61dafb;
+    margin-bottom: 5px;
+    display: block;
+}
+.btn-primary {
+    padding: 10px;
+    border-radius: 7px;
+    width:100%;
+    margin-top:25px;
+}
+.btn-secondary {
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size:12px;
+}
+.input-fields {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border: 2px solid rgba(0, 128, 128, 0.8);
+    box-sizing: border-box;
+    background-color: #1f2127;
+    color: #61dafb;
+    outline:none;
+}
+.edit-room-container {
+    padding: 20px;
+    background-color: #1f2127;
+    box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
+    margin: 5%;
+    border: solid 1px rgba(0, 128, 128, 0.6);
+}
+
+.edit-room-form {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.edit-room-container .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-room-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #61dafb;
+}
+
+.edit-room-container input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid rgba(0, 128, 128, 0.9);
+    box-sizing: border-box;
+    margin-top: 5px;
+    background-color: #1f2127;
+    resize:none;
+    outline:none;
+    color:#61dafb;
+}
+
+.edit-room-container {
+    padding: 20px;
+    background-color: #1f2127;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
+    margin: 5%;
+    border: solid 1px rgba(0, 128, 128, 0.6);
+}
+
+.edit-room-form {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.edit-room-container .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-room-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #61dafb;
+}
+
+.edit-room-container .btn-primary {
+    margin:5px;
+    width: 25%;
+}
