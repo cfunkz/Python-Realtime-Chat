@@ -41,7 +41,7 @@ This is a simple Flask-based chat application with basic features. The project i
 
 ### To-Do List
 
-- [ ] Admin list with admin commands for managing users
+- [ ] Admin list with admin panel for managing users
 - [ ] Notification system & private messages
 - [ ] Stream Video (one to one, one to many)
 - [ ] Online Users
