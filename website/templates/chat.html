@@ -4,7 +4,10 @@
 
 <div class="chat-body">
     <div class="chat-header">
-        <label id="roomname">{{ room.room_name }}</label>
+        <div>
+            <button id="user-menu" onclick="toggleAndCloseUserList()"><i class="fa-solid fa-users"></i></button>
+            <label id="roomname">{{ room.room_name }}</label>
+        </div>
         <div>
             <a style="text-decoration:none;" href="{{ url_for('views.view_profile', user_id=current_user.id) }}"><img id="head-usr" src="{% if current_user.img %}{{ current_user.img }}{% else %}{{ "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" | string }}{% endif %}" alt="Profile Image" style="width: 40px; height: 40px; border: 1.5px solid rgba(0, 128, 128, 0.9); border-radius: 50%; margin-right: 10px;"></a>
             <label id="username">{{ current_user.nickname }}</label>

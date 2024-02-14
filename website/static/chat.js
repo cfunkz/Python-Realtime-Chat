@@ -1,6 +1,11 @@
 var smileyMenu = document.getElementById("smiley-menu");
 var gifMenu = document.getElementById("giphy-menu");
 
+function toggleAndCloseUserList() {
+    var userList = document.getElementById('user-list');
+    userList.style.display = userList.style.display === 'block' ? 'none' : 'block';
+}
+
 function filterUserList() {
     var searchTerm = document.getElementById('user-search').value.toLowerCase();
     var userListItems = document.querySelectorAll('#user-list ul li');
