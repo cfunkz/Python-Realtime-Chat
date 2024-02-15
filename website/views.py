@@ -103,10 +103,12 @@ def create_room_route():
 def join_room_route(room_id):
     invite_code = request.args.get('invite_code')
     room = Room.query.get(room_id)
-    if room:
+    if room.is_private:
+        flash('Room is private. You need to join via invite code or link!', category='error')
+    elif room:
         # Check if the user is already associated with the room
         if current_user in room.users:
-            return redirect(url_for('views.chat', room_id=room_id))
+            return redirect(url_for('views.dashboard'))
         else:
             room.users.append(current_user)
             db.session.commit()
