@@ -2,11 +2,11 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_required, current_user
 from flask_socketio import join_room, leave_room, emit
 from datetime import datetime, timedelta
-from .functions import create_room, get_rooms_count, get_public_rooms, invite_code, calculate_age, upload_to_imgbb, is_valid_image, smiley_list
+from .functions import create_room, get_rooms_count, get_public_rooms, invite_code, calculate_age, upload_to_imgbb, is_valid_image, smiley_list, add_admins, get_admins, remove_admin, handle_command
 from .models import Room, User, Message
 from . import db, socketio
 from better_profanity import profanity
-import requests, bleach, os
+import requests, bleach, os, time
 from werkzeug.utils import secure_filename
 
 views = Blueprint('views', __name__)
@@ -34,25 +34,37 @@ def handle_leave_room(data):
 
 @socketio.on("new_message")
 def handle_new_message(data):
-    room_id = data['room_id']
-    user = current_user
-    message = data['message']
-    message = bleach.clean(message, tags=['img', 'strong', 'em', 'u', 'b', 'mark', 'del', 'sub', 'sup'], attributes=['src', 'alt'])
-    message = profanity.censor(message)
-    name = current_user.nickname
     if current_user.is_authenticated:
-        # Handle regular chat messages
-        db_message = Message(data=message, user_id=user.id, room_id=room_id)
-        # Add the message to the database
-        db.session.add(db_message)
-        db.session.commit()
-        print(f"New message from {name} in room {room_id}: {str(message).encode('utf-8')}")
-        time_sent = str(db_message.timestamp.strftime("%H:%M"))  # Format the timestamp nicely
-        if not current_user.img:
+        room_id = data['room_id']
+        user = current_user
+        message = data['message']
+        message = bleach.clean(message, tags=['img', 'strong', 'em', 'u', 'b', 'mark', 'del', 'sub', 'sup'], attributes=['src', 'alt'])
+        message = profanity.censor(message)
+        name = current_user.nickname
+        recipient_id = data.get('recipient_id')  # Add this line to get the recipient id from the client
+        if message.startswith("/"):
+            room = Room.query.get(room_id)  # Fetch the room object
+            response_message = handle_command(message, room)
             img = "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+            emit('message', {'msg': response_message, 'user': 'System', 'id': user.id, 'time_sent': "System", 'img': img}, room=room_id)
+        elif recipient_id:
+            # Handle private messages
+            db_private_message = PrivateMessage(data=message, sender_id=user.id, recipient_id=recipient_id)
+            db.session.add(db_private_message)
+            db.session.commit()
         else:
-            img = current_user.img
-        emit('message', {'msg': message, 'user': user.nickname, 'id':user.id, 'time_sent': time_sent, 'img': img}, room=room_id)  # Newly added 'time_sent' field to the output
+            # Handle regular chat messages
+            db_message = Message(data=message, user_id=user.id, room_id=room_id)
+            # Add the message to the database
+            db.session.add(db_message)
+            db.session.commit()
+            print(f"New message from {name} in room {room_id}: {str(message).encode('utf-8')}")
+            time_sent = str(db_message.timestamp.strftime("%H:%M"))  # Format the timestamp nicely
+            if not current_user.img:
+                img = "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+            else:
+                img = current_user.img
+            emit('message', {'msg': message, 'user': user.nickname, 'id': user.id, 'time_sent': time_sent, 'img': img}, room=room_id)  # Newly added 'time_sent' field to the output
     else:
         print("Error sending message")
 
@@ -70,6 +82,14 @@ def dashboard():
     public_rooms = get_public_rooms()
     my_rooms = current_user.rooms
     return render_template('dashboard.html', user=current_user, rooms=get_rooms_count(), public_rooms=public_rooms, my_rooms=my_rooms)
+
+@views.route('/games')
+def games():
+    return render_template('games.html', user=current_user)
+
+@views.route('/games/snake')
+def games_snake():
+    return render_template('/games/snake.html', user=current_user)
 
 @views.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -134,17 +154,30 @@ def leave_room_route(room_id):
 @login_required
 def edit_room(room_id):
     room = Room.query.get(room_id)
-    if current_user.id == room.admin_id:
+    
+    if current_user in room.admins or current_user.id == room.admin_id:
         if request.method == 'POST':
-            # Update room details based on form data
-            room.room_name = request.form.get('room_name')
-            room.is_private = 'is_private' in request.form
-            room.description = request.form.get('description')
-            room.invite_code = request.form.get('generate_code')     
-            db.session.commit()
-            flash("Room details updated successfully!", category="success")
+            if 'save_changes' in request.form:
+                # Update room details based on form data
+                room.room_name = request.form.get('room_name')
+                room.is_private = 'is_private' in request.form
+                room.description = request.form.get('description')
+                room.invite_code = request.form.get('generate_code')     
+                db.session.commit()
+                flash("Room details updated successfully!", category="success")
+                return redirect(url_for('views.edit_room', room_id=room_id))
+            elif 'add_admin' in request.form:
+                new_admin_ids = request.form.getlist('new_admin_ids')
+                add_admins(room, new_admin_ids)
+                flash("Admins added!", category="success")
+                db.session.commit()
+            elif 'remove_admin' in request.form:
+                admin_id_to_remove = request.form.get('admin_id_to_remove')
+                remove_admin(room, admin_id_to_remove)
+                flash("Admins removed!", category="success")
+                db.session.commit()
             return redirect(url_for('views.edit_room', room_id=room_id))
-        return render_template('edit_room.html', user=current_user, room=room)
+        return render_template('edit_room.html', user=current_user, room=room, admins=get_admins(room))
     else:
         flash("No access!", category="error")
         return redirect(url_for('views.edit_room', room_id=room_id))
@@ -202,7 +235,7 @@ def view_profile(user_id):
 @views.route('/get_gifs/<string:search_term>')
 def get_gifs(search_term):
     try:
-        with open('chatapp/website/config.json', 'r') as config_file:
+        with open('chatapp/config.json', 'r') as config_file:
             config = json.load(config_file)
         key = config["GIPHY_API_KEY"]
         link = f'https://api.giphy.com/v1/gifs/search?api_key={key}&q={search_term}&limit=25'
@@ -244,3 +277,19 @@ def upload_image():
                 flash('Failed to upload image to ImgBB.', category='error')
         else:
             flash('Failed to upload image to ImgBB.', category='error')
+            
+@views.route('/dm/<string:recipient_id>', methods=['GET', 'POST'])
+@login_required
+def dm_view(recipient_id):
+    recipient = User.query.get(recipient_id)
+    if not recipient:
+        flash("Recipient not found.", category="error")
+        return redirect(url_for('views.dashboard'))
+
+    if request.method == 'POST':
+        message_content = request.form.get('message_content')
+        if message_content:
+            send_private_message(current_user, recipient, message_content)
+
+    private_messages = get_private_messages(current_user, recipient)
+    return render_template('dm.html', recipient=recipient, private_messages=private_messages)

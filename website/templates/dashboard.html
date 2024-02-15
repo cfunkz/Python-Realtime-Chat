@@ -3,8 +3,29 @@
 {% block content %}
     <div class="dash-container">
         <div class="dash-tabs-container">
-            <div class="dash-tab active" onclick="toggleTab('myRooms')"  data-tab-id="myRooms">My Rooms</div>
-            <div class="dash-tab" onclick="toggleTab('publicRooms')" data-tab-id="publicRooms">Public Rooms</div>
+            <div class="dash-tab" onclick="toggleTab('myDm')"  data-tab-id="myDm"><i class="fa-solid fa-envelope"></i></div>
+            <div class="dash-tab active" onclick="toggleTab('myRooms')"  data-tab-id="myRooms"><i class="fa-solid fa-house"></i></div>
+            <div class="dash-tab" onclick="toggleTab('publicRooms')" data-tab-id="publicRooms"><i class="fa-solid fa-people-roof"></i></div>
+        </div>
+
+        <div id="myDm" class="dash-tab-content" style="display: none;">
+            <h2>Direct Messages</h2>
+            <ul class="dash-rooms-list">
+                {% for dm in direct_messages %}
+                    <li class="dash-room-item">
+                        <div class="dash-room-details">
+                            <div class="dash-room-description">
+                                <span class="dash-room-name">{{ dm.other_user.nickname }}</span>
+                                <!-- Add other details specific to direct messages -->
+                            </div>
+                        </div>
+                        <div class="dash-room-users"><i class="fa-solid fa-user"></i> <span>1</span></div>
+                        <div id="dash-buttons">
+                            <a href="{{ url_for('views.dm_chat', user_id=dm.other_user.id) }}"><button class="btn-secondary" id="chat-button"><i class="fa-solid fa-message"></i> CHAT</button></a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
 
         <div id="myRooms" class="dash-tab-content">
@@ -24,7 +45,7 @@
                         </div>
                         <div class="dash-room-users"><i class="fa-solid fa-user-group"></i> <span>{{ room.users|length }}</span></div>
                         <div id="dash-buttons">
-                            {% if current_user.id == room.admin_id %}
+                            {% if current_user in room.admins or current_user.id == room.admin_id %}
                                 <a href="{{ url_for('views.edit_room', room_id=room.id) }}"><button class="btn-secondary" id="edit-button"><i class="fa-solid fa-pen-to-square"></i> EDIT</button></a>
                             {% endif %}
                             <a href="{{ url_for('views.chat', room_id=room.id) }}"><button class="btn-secondary" id="chat-button"><i class="fa-solid fa-message"></i> CHAT</button></a>

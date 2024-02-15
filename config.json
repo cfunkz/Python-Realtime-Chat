@@ -5,3 +5,4 @@
     "SQLALCHEMY_DATABASE_URI": "sqlite:///database.db",
     "GIPHY_API_KEY": ""
   }
+  

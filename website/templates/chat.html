@@ -70,7 +70,7 @@
             <li>
                 <div class="user-options">
                     <a href="{{ url_for('views.view_profile', user_id=user.id) }}" class="user-option">{{ user.nickname }}</a>
-                    <span class="user-option" onclick="getUserId('{{ user.id }}')">Get ID</span>
+                    <button class="user-option" onclick="" href="_blank">Send DM</button>
                 </div>
             </li>
         {% endfor %}

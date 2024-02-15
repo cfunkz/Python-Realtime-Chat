@@ -105,6 +105,7 @@ def get_public_rooms():
     public_rooms = Room.query.filter_by(is_private=False).all()
     return public_rooms
 
+#########################admin stuff###########################
 def is_admin(user_id, room_id):
     # Check if the user with user_id is an admin in the specified room_id
     room = Room.query.filter_by(id=room_id).first()
@@ -112,3 +113,36 @@ def is_admin(user_id, room_id):
         admin = User.query.filter_by(id=user_id).first()
         return admin and admin.id == room.admin_id
     return False
+
+# Function to add new admins to the room
+def add_admins(room, new_admin_ids):
+    existing_admin_ids = [admin.id for admin in room.admins]
+    for admin_id in new_admin_ids:
+        admin_id = admin_id.strip()
+        if len(admin_id) == 36 and admin_id not in existing_admin_ids:
+            user = User.query.get(admin_id)
+            if user:
+                room.admins.append(user)
+
+def remove_admin(room, admin_id):
+    admin_to_remove = User.query.get(admin_id)
+    if admin_to_remove in room.admins:
+        room.admins.remove(admin_to_remove)
+        db.session.commit()
+
+def get_admins(room):
+    if room.admins:
+        return room.admins # Returns admins as list of user objects [<user_id>]
+    else:
+        return None
+    
+def handle_command(command, room):
+    command = command.lower()  # Convert the command to lowercase
+    if command.startswith("/admins"):
+        admins_list = get_admins(room)
+        if admins_list:
+            admin_names = [admin.nickname for admin in admins_list]
+            response_message = f"Admins in the room: {', '.join(admin_names)}"
+        else:
+            response_message = "There are no admins in the room."
+        return response_message

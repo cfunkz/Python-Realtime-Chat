@@ -11,6 +11,10 @@ user_room_association = db.Table('user_rooms',
     db.Column('user_id', db.String(36), db.ForeignKey('user.id')),
     db.Column('room_id', db.String(36), db.ForeignKey('room.id'))
 )
+admin_rooms_association = db.Table('admin_rooms',
+    db.Column('user_id', db.String(36), db.ForeignKey('user.id')),
+    db.Column('room_id', db.String(36), db.ForeignKey('room.id'))
+)
 
 class Room(db.Model):
     id = db.Column(db.String(36), default=generate_uuid, primary_key=True)
@@ -20,6 +24,7 @@ class Room(db.Model):
     invite_code = db.Column(db.String(6), default=False)
     description = db.Column(db.String(100))
     admin = db.relationship('User', foreign_keys=[admin_id])
+    admins = db.relationship('User', secondary=admin_rooms_association, back_populates='admin_rooms')
     users = db.relationship('User', secondary=user_room_association, back_populates='rooms')
 
 
@@ -30,7 +35,6 @@ class Message(db.Model):
     room_id = db.Column(db.String(36), db.ForeignKey('room.id')) # Room ID of message
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship('User', back_populates='messages')
-
 
 class User(db.Model, UserMixin):
     id = db.Column(db.String(36), default=generate_uuid, primary_key=True)
@@ -46,4 +50,6 @@ class User(db.Model, UserMixin):
     img = db.Column(db.String(350)) # img of user
     gender = db.Column(db.String(30)) # Gender
     rooms = db.relationship('Room', secondary=user_room_association, back_populates='users')
+    admin_rooms = db.relationship('Room', secondary=admin_rooms_association, back_populates='admins')
     messages = db.relationship('Message', back_populates='user')
+

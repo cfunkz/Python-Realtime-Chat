@@ -21,6 +21,7 @@ def create_app():
         from .models import User, Message, Room
         from .views import views
         from .auth import auth
+        from .functions import get_admins
 
         app.register_blueprint(views, url_prefix='/')
         app.register_blueprint(auth, url_prefix='/')
@@ -36,6 +37,5 @@ def create_app():
             return User.query.get(str(id))
 
         db.create_all()
-
         
     return app

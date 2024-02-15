@@ -1,10 +1,33 @@
 {% extends "base.html" %}
-{% block title %}WhisperTalk | Edit Room{% endblock %}
+{% block title %}WhisperTalk | {{ room.room_name }}{% endblock %}
 {% block content %}
     <div class="edit-room-container">
         <h2 style="color:white;">Edit Room</h2>
         <div class="edit-room-form">
             <form action="{{ url_for('views.edit_room', room_id=room.id) }}" method="post">
+                <!-- Add Admin Form -->
+            <form action="{{ url_for('views.edit_room', room_id=room.id) }}" method="post">
+                <div class="form-group">
+                    <label for="newAdminId">Add Admin by ID</label>
+                    <input type="text" id="newAdminId" name="new_admin_ids" placeholder="Enter user ID" required>
+                    <button class="btn-primary" type="submit" name="add_admin">Add Admin</button>
+                </div>
+            </form>
+
+            <!-- Admins List -->
+            {% if admins %}
+                <ul class="user-options" style="max-width:100%; max-height:150px; list-style:none; background-color">
+                    {% for admin in admins %}
+                        <li>
+                            {{ admin.username }} 
+                            <form action="{{ url_for('views.edit_room', room_id=room.id) }}" method="post" style="display:inline;">
+                                <input type="hidden" name="admin_id_to_remove" value="{{ admin.id }}">
+                                <button class="btn-danger" type="submit" name="remove_admin">Remove</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
                 <!-- Room Name -->
                 <div class="form-group">
                     <label for="roomName">Room Name</label>
@@ -29,12 +52,12 @@
                 <!-- Description -->
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea style="color:#61dafb;"id="description" name="description" rows="4">{{ room.description }}</textarea>
+                    <textarea style="color:#61dafb;" id="description" name="description" rows="4">{{ room.description }}</textarea>
                 </div>
-
+            
                 <!-- Submit Button -->
                 <div class="form-group">
-                    <button id="btn-editroom" class="btn-primary" type="submit">Save Changes</button>
+                    <button id="btn-editroom" class="btn-primary" type="submit" name="save-changes">Save Changes</button>
                 </div>
             </form>
         </div>

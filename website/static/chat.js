@@ -32,7 +32,6 @@ function toggleGifMenu() {
     gifMenu.style.display = (gifMenu.style.display === "block") ? "none" : "block";
     smileyMenu.style.display = "none";
 }
-
 function searchGifs() {
     var searchInput = document.getElementById("giphy-search");
     var searchTerm = searchInput.value;
@@ -40,6 +39,7 @@ function searchGifs() {
     fetch(`/get_gifs/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
+            console.log("Received data:", data);
             // the data
             displayGifs(data.gifs);
         })

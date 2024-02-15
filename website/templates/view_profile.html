@@ -44,9 +44,7 @@
         color: #fff;
         margin: 10px 0;
         transition: transform 0.3s ease;
-        border: solid 1px rgba(0, 128, 128, 0.6);
-        border-radius: 15px; /
-        box-shadow: 0 0 10px rgba(0, 128, 128, 0.9);
+        border-radius: 15px;
         z-index:1;
     }
 
@@ -75,10 +73,10 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border: solid 1px rgba(0, 128, 128, 0.7);
+        border: solid 1px rgba(0, 128, 128, 0.9);
         transition: transform 0.3s ease;
-        border-radius: 15px; 
-        box-shadow: 0 0 10px rgba(0, 128, 128, 1);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 128, 128, 0.8), 0 0 40px rgba(0, 128, 128, 0.5), 0 0 80px rgba(0, 128, 128, 0.3);
     }
 
     .profile-picture:hover {
@@ -104,20 +102,22 @@
 </style>
 <div class="profile-container">
     <h2>{{ user_profile.nickname }}</h2>
-
     <div class="profile-picture-container">
         <img class="profile-picture" src="{% if user_profile.img %}{{ user_profile.img }}{% else %}{{"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" | string}}{% endif %}" alt="Profile Image">
     </div>
 
+    <!-- Display User Details in a Card -->
     <div class="profile-card">
         <ul>
             <li><strong class="view-profile">Nickname</strong> {{ user_profile.username }}</li>
             <li><strong class="view-profile">Age</strong> {{ age }} years</li>   
             <li><strong class="view-profile">Gender</strong> {{ user_profile.gender.title() }}</li>         
             <li><strong class="view-profile">Country</strong> {{ user_profile.country.title() }}</li>
+            <!-- Add any additional details you want to display -->
         </ul>
     </div>
 
+    <!-- Display About Me Section in a Styled Container -->
     <div class="aboutMe">
         <strong>About Me:</strong>
         <p>{{ user_profile.aboutme }}</p>
