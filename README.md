@@ -1,6 +1,6 @@
 # EchoChat
 
-This is a simple Flask-based chat application with basic features. The project is still in its early stages, and there are plans to improve and add more features.
+This is a simple Flask-based chat application with basic features. There are plans add more featuresand improvements.
 
 ## Images
 
@@ -43,6 +43,7 @@ This is a simple Flask-based chat application with basic features. The project i
 ### To-Do List
 
 - [ ] Admin list with admin panel for managing users
+- [ ] Room search
 - [ ] Notification system & private messages
 - [ ] Stream Video (one to one, one to many)
 - [ ] Online Users
