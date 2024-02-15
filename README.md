@@ -29,7 +29,6 @@ This is a simple Flask-based chat application with basic features. There are pla
 - [Pillow (PIL Fork)](https://pillow.readthedocs.io/) - Python Imaging Library (PIL Fork)
 
 ### Features
-
 - [x] Basic Input Validation, Sanitazion & CSPS/HSTS
 - [x] Login / Register
 - [x] Basic Dashboard
@@ -39,10 +38,9 @@ This is a simple Flask-based chat application with basic features. There are pla
 - [x] Create Room, Join Room, Edit Room, Leave Room, Private Rooms, User List
 - [x] SQLite Database
 - [x] Working HTML tags in messages `<b>bold</bold>, <img>` etc. and "``" for embed.
+- [X] Admin list with admin panel for managing users
 
 ### To-Do List
-
-- [ ] Admin list with admin panel for managing users
 - [ ] Room search
 - [ ] Notification system & private messages
 - [ ] Stream Video (one to one, one to many)
