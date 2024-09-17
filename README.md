@@ -1,6 +1,6 @@
 # EchoChat
 
-This is a simple Flask-based chat application with basic features. There are plans add more featuresand improvements.
+This is a simple Flask-based chat application with basic features. There are plans add more features and improvements.
 
 ## Images
 
