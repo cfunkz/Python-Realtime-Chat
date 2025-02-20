@@ -1,8 +1,8 @@
 {
-    "IMGBB_KEY": "",
-    "SECRET_KEY": "",
-    "UPLOAD_FOLDER": "chatapp/uploads/",
+    "IMGBB_KEY": "d4249aa7029295248f7a7feaccca956a",
+    "SECRET_KEY": "thisisakeyalso",
+    "UPLOAD_FOLDER": "uploads/",
     "SQLALCHEMY_DATABASE_URI": "sqlite:///database.db",
-    "GIPHY_API_KEY": ""
+    "GIPHY_API_KEY": "8UK0VGVV5w47pi6F4aiPCvL43Vx3YCjS"
   }
   

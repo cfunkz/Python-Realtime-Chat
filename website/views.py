@@ -47,11 +47,6 @@ def handle_new_message(data):
             response_message = handle_command(message, room)
             img = "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
             emit('message', {'msg': response_message, 'user': 'System', 'id': user.id, 'time_sent': "System", 'img': img}, room=room_id)
-        elif recipient_id:
-            # Handle private messages
-            db_private_message = PrivateMessage(data=message, sender_id=user.id, recipient_id=recipient_id)
-            db.session.add(db_private_message)
-            db.session.commit()
         else:
             # Handle regular chat messages
             db_message = Message(data=message, user_id=user.id, room_id=room_id)
@@ -186,18 +181,33 @@ def edit_room(room_id):
 @login_required
 def chat(room_id):
     room = Room.query.get(room_id)
-    if current_user in room.users:
-        # Fetch message history from the database
-        message_history = Message.query.filter_by(room_id=room.id).order_by(Message.timestamp).all()
-        users = room.users
-        # Handle user search
-        search_term = request.args.get('search', '').lower()
-        if search_term:
-            users = [user for user in users if search_term in user.nickname.lower()]
-        return render_template('chat.html', user=current_user, room=room, message_history=message_history, users=users, search_term=search_term, smileys=smiley_list())
-    else:
-        flash(f'You have not joined this room!', category='error')
-        return redirect(url_for('views.index'))
+
+    if not room:
+        flash('Chat room not found!', category='error')
+        return redirect(url_for('views.index'))  # Redirect if room doesn't exist
+
+    if current_user not in room.users:
+        flash('You have not joined this room!', category='error')
+        return redirect(url_for('views.index'))  # Redirect unauthorized users
+
+    # Fetch message history
+    message_history = Message.query.filter_by(room_id=room.id).order_by(Message.timestamp).all()
+    users = room.users
+
+    # Handle user search
+    search_term = request.args.get('search', '').lower()
+    if search_term:
+        users = [user for user in users if search_term in user.nickname.lower()]
+
+    return render_template(
+        'chat.html', 
+        user=current_user, 
+        room=room, 
+        message_history=message_history,
+        users=users, 
+        search_term=search_term, 
+        smileys=smiley_list()
+    )
 
 @views.route('/join', methods=['GET', 'POST'])
 @login_required
@@ -235,7 +245,7 @@ def view_profile(user_id):
 @views.route('/get_gifs/<string:search_term>')
 def get_gifs(search_term):
     try:
-        with open('chatapp/config.json', 'r') as config_file:
+        with open('config.json', 'r') as config_file:
             config = json.load(config_file)
         key = config["GIPHY_API_KEY"]
         link = f'https://api.giphy.com/v1/gifs/search?api_key={key}&q={search_term}&limit=25'
@@ -252,44 +262,35 @@ def get_gifs(search_term):
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@views.route('/upload_image', methods=['GET', 'POST'])
+@views.route('/upload_image', methods=['POST'])
 @login_required
 def upload_image():
-    if request.method == 'POST':
-        image_file = request.files.get('image')
-        if image_file:
-            if image_file.content_length > MAX_IMAGE_SIZE_MB * 1024 * 1024:
-                flash(f'File size exceeds the maximum allowed ({MAX_IMAGE_SIZE_MB} MB).', category='error')
-                return jsonify({'error': 'File size exceeds the maximum allowed.'})
-            # Save the image file to the designated upload folder
-            image_filename = secure_filename(image_file.filename)
-            image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
-            image_file.save(image_path)
-            try:
-                is_valid_image(image_path)
-                imgbb_url = upload_to_imgbb(image_path)
-            except Exception as e:
-                print(e)
-            os.remove(image_path)
-            if imgbb_url:
-                return jsonify({'image': imgbb_url})
-            else:
-                flash('Failed to upload image to ImgBB.', category='error')
-        else:
-            flash('Failed to upload image to ImgBB.', category='error')
-            
-@views.route('/dm/<string:recipient_id>', methods=['GET', 'POST'])
-@login_required
-def dm_view(recipient_id):
-    recipient = User.query.get(recipient_id)
-    if not recipient:
-        flash("Recipient not found.", category="error")
-        return redirect(url_for('views.dashboard'))
+    if 'image' not in request.files:
+        return jsonify({'error': 'No file uploaded.'}), 400
 
-    if request.method == 'POST':
-        message_content = request.form.get('message_content')
-        if message_content:
-            send_private_message(current_user, recipient, message_content)
+    image_file = request.files['image']
 
-    private_messages = get_private_messages(current_user, recipient)
-    return render_template('dm.html', recipient=recipient, private_messages=private_messages)
+    if image_file.filename == '':
+        return jsonify({'error': 'No selected file.'}), 400
+
+    if image_file.content_length > MAX_IMAGE_SIZE_MB * 1024 * 1024:
+        return jsonify({'error': 'File size exceeds the limit.'}), 400
+
+    image_filename = secure_filename(image_file.filename)
+    image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
+    image_file.save(image_path)
+
+    try:
+        is_valid_image(image_path)  
+        imgbb_url = upload_to_imgbb(image_path)  # Upload to ImgBB
+
+        if not imgbb_url:
+            raise Exception("ImgBB upload failed!")
+
+    except Exception as e:
+        print("Image Upload Error:", e)
+        os.remove(image_path)  # Cleanup temp file
+        return jsonify({'error': str(e)}), 500
+
+    os.remove(image_path)  # Cleanup temp file
+    return jsonify({'image': imgbb_url}), 200
